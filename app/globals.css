@@ -1,26 +1,200 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --color-paper: #faf8f4;
+  --color-paper-raised: #ffffff;
+  --color-stone-100: #f2efe9;
+  --color-stone-200: #e8e3da;
+  --color-border: #ddd6c9;
+  --color-border-strong: #c9c0b1;
+
+  /* Ink */
+  --color-ink: #14201c;
+  --color-ink-soft: #2a3733;
+  --color-slate: #5b6660;
+  --color-slate-light: #838d86;
+
+  /* Dark editorial surface */
+  --color-charcoal: #10161a;
+  --color-charcoal-raised: #182022;
+
+  /* Accent — deep emerald */
+  --color-accent: #0e5c4b;
+  --color-accent-strong: #0a4438;
+  --color-accent-soft: #e4efe9;
+  --color-accent-mist: #f0f5f2;
+
+  /* Signal colours */
+  --color-amber: #a8631a;
+  --color-amber-soft: #f6ead6;
+  --color-red: #9a2f2f;
+  --color-red-soft: #f5e3e0;
+
+  --radius-card: 3px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+
+  --color-paper: var(--color-paper);
+  --color-paper-raised: var(--color-paper-raised);
+  --color-stone-100: var(--color-stone-100);
+  --color-stone-200: var(--color-stone-200);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-slate: var(--color-slate);
+  --color-slate-light: var(--color-slate-light);
+
+  --color-charcoal: var(--color-charcoal);
+  --color-charcoal-raised: var(--color-charcoal-raised);
+
+  --color-accent: var(--color-accent);
+  --color-accent-strong: var(--color-accent-strong);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-mist: var(--color-accent-mist);
+
+  --color-amber: var(--color-amber);
+  --color-amber-soft: var(--color-amber-soft);
+  --color-red: var(--color-red);
+  --color-red-soft: var(--color-red-soft);
+
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "tnum" 1;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.font-serif-display {
+  font-family: var(--font-serif);
+}
+
+.numeric {
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+[data-radix-popper-content-wrapper] {
+  animation: tooltip-in 0.12s ease-out;
+}
+
+.tracking-label {
+  letter-spacing: 0.14em;
+}
+
+/* Thin scrollbars for horizontally-scrolling data panels on small screens */
+.scroll-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-break-before {
+    break-before: page;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
+
+.print-only {
+  display: none;
 }

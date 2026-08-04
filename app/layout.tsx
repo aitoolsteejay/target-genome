@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { CalculatorStoreProvider } from "@/lib/calculator-store";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,6 +39,7 @@ export default function RootLayout({
         <CalculatorStoreProvider>
           <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
         </CalculatorStoreProvider>
+        <Analytics />
       </body>
     </html>
   );

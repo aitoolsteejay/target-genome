@@ -1,29 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  /* Surfaces — warm white */
-  --color-paper: #fbf8f3;
+  /* Surfaces — white */
+  --color-paper: #ffffff;
   --color-paper-raised: #ffffff;
-  --color-stone-100: #f3eee5;
-  --color-stone-200: #e9e1d3;
-  --color-border: #e6ddcf;
-  --color-border-strong: #d3c6b2;
+  --color-stone-100: #f5f5f5;
+  --color-stone-200: #ececec;
+  --color-border: #e3e3e3;
+  --color-border-strong: #cfcfcf;
 
-  /* Ink — deep charcoal */
-  --color-ink: #1c1a17;
-  --color-ink-soft: #34302b;
-  --color-slate: #6b6259;
-  --color-slate-light: #9c9188;
+  /* Ink — neutral charcoal */
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #333333;
+  --color-slate: #666666;
+  --color-slate-light: #999999;
 
   /* Dark editorial surface */
-  --color-charcoal: #15130f;
-  --color-charcoal-raised: #1d1a15;
+  --color-charcoal: #141414;
+  --color-charcoal-raised: #1c1c1c;
 
-  /* Accent — emerald */
-  --color-accent: #0f6d4e;
-  --color-accent-strong: #0b4f39;
-  --color-accent-soft: #e2f0e8;
-  --color-accent-mist: #f1f7f3;
+  /* Accent — Antal purple */
+  --color-accent: #6e4b9e;
+  --color-accent-strong: #4e3574;
+  --color-accent-soft: #eae3f2;
+  --color-accent-mist: #f6f2fa;
+
+  /* Secondary accent — Antal green */
+  --color-accent-secondary: #4d9b49;
+  --color-accent-secondary-strong: #396e36;
+  --color-accent-secondary-soft: #e4f1e3;
+  --color-accent-secondary-mist: #f2f9f1;
 
   /* Calendar / signal colours */
   --color-grey: #8a8178;
@@ -59,6 +65,11 @@
   --color-accent-strong: var(--color-accent-strong);
   --color-accent-soft: var(--color-accent-soft);
   --color-accent-mist: var(--color-accent-mist);
+
+  --color-accent-secondary: var(--color-accent-secondary);
+  --color-accent-secondary-strong: var(--color-accent-secondary-strong);
+  --color-accent-secondary-soft: var(--color-accent-secondary-soft);
+  --color-accent-secondary-mist: var(--color-accent-secondary-mist);
 
   --color-grey: var(--color-grey);
   --color-grey-soft: var(--color-grey-soft);

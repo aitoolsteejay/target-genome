@@ -101,7 +101,7 @@ export function GenerationSequence() {
                 cx={node.x}
                 cy={node.y}
                 r={0.9}
-                fill="#2f9a6f"
+                fill="#4d9b49"
                 initial={{ opacity: 0.15, scale: 0.6 }}
                 animate={
                   reduceMotion

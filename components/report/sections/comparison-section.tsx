@@ -46,14 +46,14 @@ export function ComparisonSection({ comparison }: { comparison: SpecialistCompar
           </div>
         </div>
 
-        <div className="mt-10 border border-accent/25 bg-accent-mist px-7 py-10 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-label text-accent-strong">
+        <div className="mt-10 border border-accent-secondary/25 bg-accent-secondary-mist px-7 py-10 text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-label text-accent-secondary-strong">
             Estimated Reduction
           </p>
-          <p className="mt-3 numeric font-serif-display text-[56px] leading-none text-accent-strong sm:text-[68px]">
+          <p className="mt-3 numeric font-serif-display text-[56px] leading-none text-accent-secondary-strong sm:text-[68px]">
             <AnimatedCounter value={comparison.hoursReturned} duration={1.2} />
           </p>
-          <p className="mt-2 flex items-center justify-center gap-1.5 text-[13px] font-semibold uppercase tracking-label text-accent-strong">
+          <p className="mt-2 flex items-center justify-center gap-1.5 text-[13px] font-semibold uppercase tracking-label text-accent-secondary-strong">
             Hours Returned
             <InfoTooltip>
               The difference between your current process and the specialist-supported estimate:

@@ -67,6 +67,13 @@ export function LeadCaptureSection({ defaultRole }: { defaultRole: string }) {
           We&apos;ll review your hiring process and identify where leadership time can be reduced.
         </p>
 
+        <p className="mt-6 border-l-2 border-accent/60 pl-4 text-[14px] leading-relaxed text-stone-100/70">
+          At Antal, we&apos;ve been helping organisations hire technology talent for over 30 years
+          globally and 18+ years in India. Our focus has always been on quality over volume, which
+          is why close to 75% of the profiles we share progress to interviews and 75-80% of offers
+          result in joiners.
+        </p>
+
         <form className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
           <Field label="Name" htmlFor="lead-name">
             <Input

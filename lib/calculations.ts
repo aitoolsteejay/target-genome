@@ -16,8 +16,6 @@ import type {
   SpecialistComparison,
   TimeCategory,
   TimeLeakReport,
-  WhatIfAssumptions,
-  WhatIfOutput,
 } from "./types";
 
 const HOURS_PER_WORKING_DAY = 8;
@@ -218,33 +216,15 @@ function buildLossItems(input: CalculatorInput, categories: TimeCategory[]): Los
     .map((item, i) => ({ ...item, rank: i + 1 }));
 }
 
-function buildCalendarUtilization(input: CalculatorInput) {
-  const totalInterviewRounds =
-    input.technicalInterviews + input.hiringManagerInterviews + input.leadershipInterviews + input.finalInterviews;
-  const rejectedBlocks = Math.max(0, input.technicalInterviews - input.offers);
-  const offerDeclinedBlocks = Math.max(0, input.offers - input.joins);
-  const interviewBlocks = Math.max(0, totalInterviewRounds - rejectedBlocks - offerDeclinedBlocks);
-  const totalBlocks = Math.max(1, totalInterviewRounds);
-  const wastedPercent = Math.round(((rejectedBlocks + offerDeclinedBlocks) / totalBlocks) * 100);
-
-  return {
-    totalBlocks,
-    interviewBlocks,
-    rejectedBlocks,
-    offerDeclinedBlocks,
-    wastedPercent: clamp(wastedPercent, 0, 100),
-  };
-}
-
 function buildExecutiveSummary(input: CalculatorInput, report: Pick<TimeLeakReport, "totalLeadershipHours" | "lossItems">): string {
   const topLoss = report.lossItems[0];
   const roleLabel = input.role || "this role";
 
-  return `Your current process for hiring a ${roleLabel.toLowerCase()} is good at avoiding hiring mistakes, but it does that by putting a lot of extra work on your senior technical leaders. Based on what you entered, leadership spends about ${Math.round(
+  return `Hiring a ${roleLabel.toLowerCase()} is currently costing your leadership about ${Math.round(
     report.totalLeadershipHours
-  )} hours interviewing candidates to make ${input.joins > 1 ? `${input.joins} successful hires` : "one successful hire"}. The biggest source of lost time is not how long each interview takes. It is ${
+  )} hours to make ${input.joins > 1 ? `${input.joins} successful hires` : "one successful hire"}, mostly from ${
     topLoss ? topLoss.title.toLowerCase() : "unsuitable candidates making it too far through the process"
-  }. A specialist recruitment partner usually helps by cutting down how many leadership interviews happen, not by simply sending more candidates. That means your internal Talent Acquisition team keeps running the hiring process, while your leaders spend less time on it earlier on.`;
+  }. A specialist recruitment partner cuts that time by reducing how many leadership interviews happen, not by sending more candidates, keeping your internal Talent Acquisition team in charge while leaders spend less time in the room.`;
 }
 
 export function computeTimeLeakReport(input: CalculatorInput): TimeLeakReport {
@@ -271,7 +251,6 @@ export function computeTimeLeakReport(input: CalculatorInput): TimeLeakReport {
     opportunityCostInr: Math.round(totalLeadershipHours * avgRate),
     categories,
     funnelStages: buildFunnelStages(input),
-    calendarUtilization: buildCalendarUtilization(input),
     comparison: buildComparison(categories, totalLeadershipHours),
     lossItems,
     executiveSummary: "",
@@ -280,70 +259,3 @@ export function computeTimeLeakReport(input: CalculatorInput): TimeLeakReport {
   report.executiveSummary = buildExecutiveSummary(input, report);
   return report;
 }
-
-/**
- * Live recompute for the "What If" simulator. Applies percentage reductions
- * to the relevant categories of an already-computed report, rather than
- * re-deriving from raw input, so the sliders stay fast and the baseline
- * always matches the report currently on screen.
- */
-export function computeWhatIf(report: TimeLeakReport, assumptions: WhatIfAssumptions): WhatIfOutput {
-  const technical = categoryHours(report.categories, "technical-interviews");
-  const hm = categoryHours(report.categories, "hiring-manager-interviews");
-  const leadership = categoryHours(report.categories, "leadership-interviews");
-  const scheduling = categoryHours(report.categories, "interview-scheduling");
-  const feedback = categoryHours(report.categories, "feedback-discussions");
-  const rejected = categoryHours(report.categories, "rejected-candidates");
-  const offerFallout = categoryHours(report.categories, "offer-fallout");
-  const resumeReviews = categoryHours(report.categories, "resume-reviews");
-  const recruiterSync = categoryHours(report.categories, "recruiter-sync");
-
-  const compression = assumptions.processCompression / 100;
-  const qualification = assumptions.recruiterQualification / 100;
-  const falloutReduction = assumptions.offerFalloutReduction / 100;
-
-  // Process compression (fewer rounds): cuts scheduling and feedback
-  // overhead directly, and a smaller share of interview time itself.
-  const compressedScheduling = scheduling * (1 - compression * 0.6);
-  const compressedFeedback = feedback * (1 - compression * 0.5);
-  const compressedTechnical = technical * (1 - compression * 0.15);
-  const compressedHm = hm * (1 - compression * 0.15);
-
-  // Recruiter qualification: fewer unsuitable candidates reach technical/HM
-  // rounds and fewer need rejecting after the fact.
-  const qualifiedTechnical = compressedTechnical * (1 - qualification * 0.4);
-  const qualifiedRejected = rejected * (1 - qualification * 0.5);
-
-  // Offer fallout reduction: better candidate engagement before the offer.
-  const reducedFallout = offerFallout * (1 - falloutReduction);
-
-  // Delaying leadership involvement removes the multiplier effect of
-  // several leadership-tier interviewers sitting in on the same rounds.
-  const adjustedLeadership = assumptions.delayLeadershipInterviews ? leadership * 0.6 : leadership;
-
-  const totalHours =
-    resumeReviews +
-    compressedScheduling +
-    recruiterSync +
-    qualifiedTechnical +
-    compressedHm +
-    adjustedLeadership +
-    compressedFeedback +
-    qualifiedRejected +
-    reducedFallout;
-
-  const leadershipHoursReturned = Math.max(0, report.totalLeadershipHours - totalHours);
-
-  return {
-    totalHours: roundToOneDecimal(totalHours),
-    weeksLost: roundToOneDecimal(totalHours / HOURS_PER_WORKING_WEEK),
-    leadershipHoursReturned: roundToOneDecimal(leadershipHoursReturned),
-  };
-}
-
-export const DEFAULT_WHAT_IF_ASSUMPTIONS: WhatIfAssumptions = {
-  processCompression: 0,
-  recruiterQualification: 0,
-  offerFalloutReduction: 0,
-  delayLeadershipInterviews: false,
-};

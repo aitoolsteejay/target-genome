@@ -21,7 +21,7 @@ export const GeneratedLossItemSchema = z.object({
 });
 
 export const GeneratedReportContentSchema = z.object({
-  executiveSummary: z.string().min(1).max(900),
+  executiveSummary: z.string().min(1).max(420),
   lossItems: z.array(GeneratedLossItemSchema).length(4),
 });
 

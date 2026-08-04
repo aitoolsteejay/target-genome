@@ -52,7 +52,7 @@ ${lossItemLines}
 
 Return JSON matching the schema with exactly two things:
 
-1. "executiveSummary": a short paragraph (roughly 4 to 6 sentences) written for the hiring manager who submitted this. Reference the actual role, the actual total hours, and the actual biggest loss item by name. Explain what it means in plain language, and end with one concrete, specific suggestion tied to their numbers. Do not use the word "leverage" or "optimize". Do not start with "In conclusion" or "Overall".
+1. "executiveSummary": a short paragraph (2 to 3 sentences, no more) written for the hiring manager who submitted this. Reference the actual role, the actual total hours, and the actual biggest loss item by name, and end with one concrete, specific suggestion tied to their numbers. Do not use the word "leverage" or "optimize". Do not start with "In conclusion" or "Overall".
 
 2. "lossItems": exactly 4 objects, one for each id below, each with a short punchy "title" (under 8 words) and a specific one-sentence "recommendation" that a hiring manager could actually act on this week. Write these as if you are a specialist recruiter giving direct advice, not a generic tip list. Keep the title recognizably about the same problem as the current title, but feel free to make it sharper and more specific to this exact role and these exact numbers.
    - id "unsuitable-technical": about too many technical interviews with candidates who were not a real fit

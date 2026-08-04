@@ -71,14 +71,6 @@ export interface TimeCategory {
   hours: number;
 }
 
-export interface CalendarUtilization {
-  totalBlocks: number;
-  interviewBlocks: number;
-  rejectedBlocks: number;
-  offerDeclinedBlocks: number;
-  wastedPercent: number;
-}
-
 export interface FunnelHoursStage {
   id: string;
   label: string;
@@ -114,31 +106,9 @@ export interface TimeLeakReport {
 
   categories: TimeCategory[];
   funnelStages: FunnelHoursStage[];
-  calendarUtilization: CalendarUtilization;
   comparison: SpecialistComparison;
   lossItems: LossItem[];
   executiveSummary: string;
-}
-
-// ---------------------------------------------------------------------------
-// What-if simulator
-// ---------------------------------------------------------------------------
-
-export interface WhatIfAssumptions {
-  /** 0 = no compression, 100 = maximum stage compression (5 rounds → 3). */
-  processCompression: number;
-  /** 0 = current qualification depth, 100 = maximum improvement in early screening. */
-  recruiterQualification: number;
-  /** 0 = no change, 100 = maximum reduction in declined-offer rework. */
-  offerFalloutReduction: number;
-  /** "Move CTO interview later": delay top-tier leadership involvement until shortlist. */
-  delayLeadershipInterviews: boolean;
-}
-
-export interface WhatIfOutput {
-  totalHours: number;
-  weeksLost: number;
-  leadershipHoursReturned: number;
 }
 
 // ---------------------------------------------------------------------------

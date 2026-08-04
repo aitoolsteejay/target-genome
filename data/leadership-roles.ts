@@ -13,7 +13,7 @@ export const LEADERSHIP_ROLES: LeadershipRoleDefinition[] = [
   { key: "director", label: "Director", hourlyRateInr: 8000, tier: "leadership" },
   { key: "vp", label: "VP", hourlyRateInr: 10000, tier: "leadership" },
   { key: "cto", label: "CTO", hourlyRateInr: 12000, tier: "leadership" },
-  { key: "founder", label: "Founder", hourlyRateInr: 12000, tier: "leadership" },
+  { key: "founder", label: "Founder / Managing Director / CEO / CXO", hourlyRateInr: 12000, tier: "leadership" },
   { key: "product_head", label: "Product Head", hourlyRateInr: 9000, tier: "leadership" },
 ];
 

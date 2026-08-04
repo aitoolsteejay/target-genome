@@ -1,10 +1,10 @@
 /**
- * Hiring Manager Time Leak — core data model.
+ * Hiring Manager Time Leak: core data model.
  *
  * The whole app is a client-side calculator: a submitted CalculatorInput is
  * turned into a TimeLeakReport by lib/calculations.ts, entirely in the
  * browser, with no backend involved. Every number is a documented mock
- * heuristic — see the comments in lib/calculations.ts for the assumptions.
+ * heuristic, see the comments in lib/calculations.ts for the assumptions.
  */
 
 // ---------------------------------------------------------------------------
@@ -24,7 +24,7 @@ export type LeadershipRoleKey =
 export interface LeadershipRoleDefinition {
   key: LeadershipRoleKey;
   label: string;
-  /** Mock hourly value in INR — used only to compute a de-emphasised opportunity-cost figure. */
+  /** Mock hourly value in INR, used only to compute a de-emphasised opportunity-cost figure. */
   hourlyRateInr: number;
   /** Roles at this tier multiply leadership-interview hours when several are selected together. */
   tier: "interviewer" | "leadership";
@@ -35,13 +35,13 @@ export interface LeadershipRoleDefinition {
 // ---------------------------------------------------------------------------
 
 export interface CalculatorInput {
-  // Step 1 — basic information
+  // Step 1: basic information
   role: string;
 
-  // Step 2 — hiring volume
+  // Step 2: hiring volume
   hiresNeeded: number;
 
-  // Step 3 — current hiring process (funnel counts)
+  // Step 3: current hiring process (funnel counts)
   resumesReviewedByManager: number;
   recruiterScreens: number;
   technicalInterviews: number;
@@ -51,13 +51,13 @@ export interface CalculatorInput {
   offers: number;
   joins: number;
 
-  // Step 4 — interview details (minutes)
+  // Step 4: interview details (minutes)
   avgInterviewDurationMins: number;
   avgPrepTimeMins: number;
   avgFeedbackTimeMins: number;
   avgSchedulingOverheadMins: number;
 
-  // Step 5 — leadership involvement
+  // Step 5: leadership involvement
   involvedRoles: LeadershipRoleKey[];
 }
 
@@ -131,7 +131,7 @@ export interface WhatIfAssumptions {
   recruiterQualification: number;
   /** 0 = no change, 100 = maximum reduction in declined-offer rework. */
   offerFalloutReduction: number;
-  /** "Move CTO interview later" — delay top-tier leadership involvement until shortlist. */
+  /** "Move CTO interview later": delay top-tier leadership involvement until shortlist. */
   delayLeadershipInterviews: boolean;
 }
 

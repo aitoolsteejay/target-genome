@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/shared/section-heading";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { cn } from "@/lib/utils";
 import type { CalendarUtilization } from "@/lib/types";
 
@@ -47,6 +48,7 @@ export function ExecutiveCalendarSection({ util }: { util: CalendarUtilization }
         <SectionHeading
           eyebrow="The Executive Calendar"
           title="What one hiring week looks like on a leader's calendar."
+          description="A proportional sample of your actual interview load, spread across a five-day week, not a literal schedule."
         />
 
         <div className="mt-10 grid grid-cols-5 gap-3">
@@ -85,8 +87,12 @@ export function ExecutiveCalendarSection({ util }: { util: CalendarUtilization }
           ))}
         </div>
 
-        <p className="mt-8 max-w-lg font-serif-display text-[19px] italic leading-relaxed text-ink">
+        <p className="mt-8 flex max-w-lg items-start gap-2 font-serif-display text-[19px] italic leading-relaxed text-ink">
           {util.wastedPercent}% of these calendar blocks never resulted in a hire.
+          <InfoTooltip className="mt-1.5">
+            The share of interview blocks that ended in a rejection or a declined offer, instead
+            of a hire.
+          </InfoTooltip>
         </p>
       </div>
     </section>

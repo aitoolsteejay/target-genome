@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, RotateCcw } from "lucide-react";
 import { SiteHeader } from "@/components/navigation/site-header";
 import { SiteFooter } from "@/components/navigation/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ import { InterviewDetailsStep } from "@/components/calculator/interview-details-
 import { LeadershipStep } from "@/components/calculator/leadership-step";
 import { GenerationSequence } from "@/components/calculator/generation-sequence";
 import { EXAMPLE_INPUT } from "@/data/example-input";
-import { useCalculatorStore } from "@/lib/calculator-store";
+import { ReportGenerationError, useCalculatorStore } from "@/lib/calculator-store";
 import type { CalculatorInput, LeadershipRoleKey } from "@/lib/types";
 
 const STEPS = [
@@ -29,28 +29,68 @@ function cloneInput(input: CalculatorInput): CalculatorInput {
   return JSON.parse(JSON.stringify(input));
 }
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const MIN_GENERATION_DISPLAY_MS = 2200;
+
+type Status = "form" | "generating" | "error";
+
 export default function CalculatePage() {
   const router = useRouter();
   const { submitInput } = useCalculatorStore();
   const [input, setInput] = useState<CalculatorInput>(() => cloneInput(EXAMPLE_INPUT));
   const [step, setStep] = useState(0);
-  const [generating, setGenerating] = useState(false);
+  const [status, setStatus] = useState<Status>("form");
+  const [generationError, setGenerationError] = useState<string | null>(null);
 
   function patch(fields: Partial<CalculatorInput>) {
     setInput((prev) => ({ ...prev, ...fields }));
   }
 
-  function handleReveal() {
-    setGenerating(true);
+  async function runGeneration() {
+    setStatus("generating");
+    setGenerationError(null);
+    try {
+      await Promise.all([submitInput(input), delay(MIN_GENERATION_DISPLAY_MS)]);
+      router.push("/report");
+    } catch (err) {
+      setStatus("error");
+      setGenerationError(
+        err instanceof ReportGenerationError
+          ? err.message
+          : "Something interrupted the calculation. This is usually temporary, try again."
+      );
+    }
   }
 
-  function handleGenerationComplete() {
-    submitInput(input);
-    router.push("/report");
+  if (status === "generating") {
+    return <GenerationSequence />;
   }
 
-  if (generating) {
-    return <GenerationSequence onComplete={handleGenerationComplete} />;
+  if (status === "error") {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-charcoal px-6 text-center">
+        <AlertTriangle className="h-8 w-8 text-orange" aria-hidden />
+        <h1 className="mt-5 font-serif-display text-2xl text-paper">Could not build your report</h1>
+        <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-stone-100/70">{generationError}</p>
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <Button
+            variant="outline"
+            className="!border-white/20 !text-paper hover:!bg-white/10"
+            onClick={() => setStatus("form")}
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to the form
+          </Button>
+          <Button variant="accent" onClick={runGeneration}>
+            <RotateCcw className="h-3.5 w-3.5" />
+            Try again
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   const isLastStep = step === STEPS.length - 1;
@@ -100,7 +140,7 @@ export default function CalculatePage() {
             </Button>
 
             {isLastStep ? (
-              <Button size="lg" variant="accent" onClick={handleReveal}>
+              <Button size="lg" variant="accent" onClick={runGeneration}>
                 Reveal My Time Leak
               </Button>
             ) : (

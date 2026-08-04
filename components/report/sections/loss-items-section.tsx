@@ -1,4 +1,5 @@
 import { SectionHeading } from "@/components/shared/section-heading";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { formatHours } from "@/lib/formatters";
 import type { LossItem } from "@/lib/types";
 
@@ -9,6 +10,7 @@ export function LossItemsSection({ items }: { items: LossItem[] }) {
         <SectionHeading
           eyebrow="Where The Time Is Lost"
           title="Ranked by leadership hours at stake."
+          description="The biggest, most fixable sources of wasted leadership time in your process, starting with the largest."
         />
 
         <div className="mt-10 divide-y divide-border border-t border-b border-border">
@@ -19,13 +21,19 @@ export function LossItemsSection({ items }: { items: LossItem[] }) {
               </span>
               <div className="flex-1">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <p className="text-[16px] font-medium text-ink">{item.title}</p>
+                  <p className="flex items-center gap-1.5 text-[16px] font-medium text-ink">
+                    {item.title}
+                    <InfoTooltip>
+                      An estimate of how many of your leadership hours are tied to this specific
+                      problem.
+                    </InfoTooltip>
+                  </p>
                   <p className="numeric font-serif-display text-xl text-accent-strong">
                     {formatHours(item.estimatedLossHours)}
                   </p>
                 </div>
                 <p className="mt-1.5 text-[13.5px] leading-relaxed text-slate">
-                  <span className="font-medium text-ink-soft">Recommendation — </span>
+                  <span className="font-medium text-ink-soft">Recommendation: </span>
                   {item.recommendation}
                 </p>
               </div>

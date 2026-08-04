@@ -1,11 +1,11 @@
 /**
- * Hiring Manager Time Leak — calculation engine.
+ * Hiring Manager Time Leak: calculation engine.
  *
  * Every constant below is a documented mock assumption, not a validated
  * benchmark. The goal is a calculator whose relationships are logical and
  * whose totals are internally consistent (every category sums exactly to
  * the reported total), not a source of real labour-market or productivity
- * data. Replace the constants — not the shapes — when real data exists.
+ * data. Replace the constants, not the shapes, when real data exists.
  */
 
 import { LEADERSHIP_ROLES } from "@/data/leadership-roles";
@@ -49,7 +49,7 @@ function roundToOneDecimal(value: number): number {
 /**
  * Builds the 9 time categories that make up the vertical timeline. Every
  * category is a genuinely distinct activity, so they sum exactly to the
- * reported total leadership time — unlike the interview-count funnel, there
+ * reported total leadership time. Unlike the interview-count funnel, there
  * is no double counting between categories.
  */
 export function computeCategories(input: CalculatorInput): TimeCategory[] {
@@ -240,11 +240,11 @@ function buildExecutiveSummary(input: CalculatorInput, report: Pick<TimeLeakRepo
   const topLoss = report.lossItems[0];
   const roleLabel = input.role || "this role";
 
-  return `Your current process for hiring ${roleLabel.toLowerCase()} appears optimised for reducing hiring mistakes. However, it achieves this by transferring significant workload onto senior technical leaders. Based on the information provided, leadership spends approximately ${Math.round(
+  return `Your current process for hiring a ${roleLabel.toLowerCase()} is good at avoiding hiring mistakes, but it does that by putting a lot of extra work on your senior technical leaders. Based on what you entered, leadership spends about ${Math.round(
     report.totalLeadershipHours
-  )} hours interviewing candidates to complete ${input.joins > 1 ? `${input.joins} successful hires` : "one successful hire"}. The largest source of lost time is not interview duration — it is ${
-    topLoss ? topLoss.title.toLowerCase() : "unsuitable candidates progressing too far through the process"
-  }. A specialist recruitment partner would typically reduce the number of leadership interviews rather than simply increase sourcing volume. This allows internal Talent Acquisition teams to continue owning the hiring process while reducing executive involvement earlier in the funnel.`;
+  )} hours interviewing candidates to make ${input.joins > 1 ? `${input.joins} successful hires` : "one successful hire"}. The biggest source of lost time is not how long each interview takes. It is ${
+    topLoss ? topLoss.title.toLowerCase() : "unsuitable candidates making it too far through the process"
+  }. A specialist recruitment partner usually helps by cutting down how many leadership interviews happen, not by simply sending more candidates. That means your internal Talent Acquisition team keeps running the hiring process, while your leaders spend less time on it earlier on.`;
 }
 
 export function computeTimeLeakReport(input: CalculatorInput): TimeLeakReport {
@@ -284,7 +284,7 @@ export function computeTimeLeakReport(input: CalculatorInput): TimeLeakReport {
 /**
  * Live recompute for the "What If" simulator. Applies percentage reductions
  * to the relevant categories of an already-computed report, rather than
- * re-deriving from raw input — so the sliders stay fast and the baseline
+ * re-deriving from raw input, so the sliders stay fast and the baseline
  * always matches the report currently on screen.
  */
 export function computeWhatIf(report: TimeLeakReport, assumptions: WhatIfAssumptions): WhatIfOutput {

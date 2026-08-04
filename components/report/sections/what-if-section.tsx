@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { computeWhatIf, DEFAULT_WHAT_IF_ASSUMPTIONS } from "@/lib/calculations";
 import type { TimeLeakReport, WhatIfAssumptions } from "@/lib/types";
 
@@ -28,7 +29,7 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
           <SectionHeading
             eyebrow="What If?"
             title="Adjust the process. Watch the hours move."
-            description="Every control recalculates instantly against this report — no request, no waiting."
+            description="Every control below recalculates instantly against this report. Nothing is sent anywhere, so feel free to try different combinations."
           />
           {isModified && (
             <Button size="sm" variant="ghost" onClick={() => setAssumptions(DEFAULT_WHAT_IF_ASSUMPTIONS)}>
@@ -41,8 +42,14 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
           <div className="space-y-8">
             <div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="wi-rounds" className="mb-0">Reduce interview rounds</Label>
-                <span className="text-[12.5px] text-slate-light">5 → 3</span>
+                <span className="flex items-center gap-1.5">
+                  <Label htmlFor="wi-rounds" className="mb-0">Reduce interview rounds</Label>
+                  <InfoTooltip>
+                    Slide right to simulate combining or removing rounds, for example going from
+                    five stages down to three. This mainly saves scheduling and feedback time.
+                  </InfoTooltip>
+                </span>
+                <span className="text-[12.5px] text-slate-light">5 to 3 rounds</span>
               </div>
               <Slider
                 id="wi-rounds"
@@ -57,7 +64,13 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
 
             <div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="wi-qualification" className="mb-0">Increase recruiter qualification</Label>
+                <span className="flex items-center gap-1.5">
+                  <Label htmlFor="wi-qualification" className="mb-0">Increase recruiter qualification</Label>
+                  <InfoTooltip>
+                    Slide right to simulate better screening before candidates reach a technical
+                    interview, so fewer unsuitable candidates take up interview time.
+                  </InfoTooltip>
+                </span>
                 <span className="numeric text-[12.5px] text-slate-light">{assumptions.recruiterQualification}%</span>
               </div>
               <Slider
@@ -73,7 +86,13 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
 
             <div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="wi-fallout" className="mb-0">Reduce offer fallout</Label>
+                <span className="flex items-center gap-1.5">
+                  <Label htmlFor="wi-fallout" className="mb-0">Reduce offer fallout</Label>
+                  <InfoTooltip>
+                    Slide right to simulate fewer declined offers, so less time is spent
+                    restarting the process after a candidate says no.
+                  </InfoTooltip>
+                </span>
                 <span className="numeric text-[12.5px] text-slate-light">{assumptions.offerFalloutReduction}%</span>
               </div>
               <Slider
@@ -88,7 +107,13 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
             </div>
 
             <div className="flex items-center justify-between border border-border px-4 py-3.5">
-              <Label htmlFor="wi-delay" className="mb-0 text-[13.5px]">Move CTO interview later</Label>
+              <span className="flex items-center gap-1.5">
+                <Label htmlFor="wi-delay" className="mb-0 text-[13.5px]">Move CTO interview later</Label>
+                <InfoTooltip>
+                  Turn this on to simulate bringing your most senior leaders in only for a final,
+                  shortlisted round instead of earlier in the process.
+                </InfoTooltip>
+              </span>
               <Switch
                 id="wi-delay"
                 checked={assumptions.delayLeadershipInterviews}
@@ -98,19 +123,26 @@ export function WhatIfSection({ report }: { report: TimeLeakReport }) {
           </div>
 
           <div className="border border-border bg-paper-raised p-7">
-            <p className="text-[11px] font-semibold uppercase tracking-label text-slate">Total Hours</p>
+            <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-label text-slate">
+              Total Hours
+              <InfoTooltip>The recalculated total leadership hours with your changes applied.</InfoTooltip>
+            </p>
             <p className="mt-1.5 numeric font-serif-display text-4xl text-ink">
               <AnimatedCounter value={output.totalHours} duration={0.5} />
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-5 border-t border-border pt-6">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-label text-slate">Weeks Lost</p>
+                <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-label text-slate">
+                  Weeks Lost
+                  <InfoTooltip>Total hours converted into working weeks, assuming a 40-hour week.</InfoTooltip>
+                </p>
                 <p className="mt-1.5 numeric font-serif-display text-2xl text-ink-soft">{output.weeksLost}</p>
               </div>
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-label text-accent-strong">
+                <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-label text-accent-strong">
                   Leadership Hours Returned
+                  <InfoTooltip>How many hours these changes would save compared to your current process.</InfoTooltip>
                 </p>
                 <p className="mt-1.5 numeric font-serif-display text-2xl text-accent-strong">
                   {output.leadershipHoursReturned}

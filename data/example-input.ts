@@ -3,7 +3,7 @@ import type { CalculatorInput } from "@/lib/types";
 /**
  * Used both to preload the calculator form and as the instant "View Example
  * Report" preset. Deliberately a demanding but realistic senior-hire
- * scenario — the numbers are illustrative, not derived from any real search.
+ * scenario. The numbers are illustrative, not derived from any real search.
  */
 export const EXAMPLE_INPUT: CalculatorInput = {
   role: "Backend Engineer",

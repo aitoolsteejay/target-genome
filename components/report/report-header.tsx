@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import type { TimeLeakReport } from "@/lib/types";
 
 export function ReportHeader({ report }: { report: TimeLeakReport }) {
@@ -21,7 +22,14 @@ export function ReportHeader({ report }: { report: TimeLeakReport }) {
       <p className="mt-2 font-serif-display text-[64px] leading-none text-accent-strong numeric sm:text-[92px]">
         <AnimatedCounter value={totalLeadershipHours} duration={1.4} />
       </p>
-      <p className="mt-1 font-serif-display text-[24px] text-ink sm:text-[28px]">Leadership Hours</p>
+      <p className="mt-1 flex items-center justify-center gap-1.5 font-serif-display text-[24px] text-ink sm:text-[28px]">
+        Leadership Hours
+        <InfoTooltip>
+          The total time your Hiring Manager and any leaders involved spent on this hiring
+          process: reviewing resumes, coordinating, interviewing, writing feedback, and dealing
+          with rejections or declined offers.
+        </InfoTooltip>
+      </p>
 
       <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-slate">
         Equivalent to <span className="font-semibold text-ink-soft">{workingDaysEquivalent} full working days</span>{" "}

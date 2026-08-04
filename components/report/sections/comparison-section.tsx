@@ -2,6 +2,7 @@
 
 import { SectionHeading } from "@/components/shared/section-heading";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { formatHours } from "@/lib/formatters";
 import type { SpecialistComparison } from "@/lib/types";
 
@@ -12,7 +13,7 @@ export function ComparisonSection({ comparison }: { comparison: SpecialistCompar
         <SectionHeading
           eyebrow="A Specialist-Supported Process"
           title="Qualifying candidates earlier changes the calendar math."
-          description="A specialist recruitment process typically reduces unnecessary leadership interviews by qualifying candidates earlier — not by claiming to be a better judge of talent."
+          description="A specialist recruitment process typically cuts down unnecessary leadership interviews by qualifying candidates earlier. This is not a claim that a specialist judges talent better."
         />
 
         <div className="mt-10 grid grid-cols-1 gap-px border border-border bg-border sm:grid-cols-2">
@@ -20,7 +21,10 @@ export function ComparisonSection({ comparison }: { comparison: SpecialistCompar
             <p className="text-[11px] font-semibold uppercase tracking-label text-slate">
               Current Process
             </p>
-            <p className="mt-2 text-[13px] text-slate-light">Leadership Time</p>
+            <p className="mt-2 flex items-center gap-1.5 text-[13px] text-slate-light">
+              Leadership Time
+              <InfoTooltip>Total leadership hours under your current process, as entered.</InfoTooltip>
+            </p>
             <p className="mt-1 numeric font-serif-display text-4xl text-ink">
               {formatHours(comparison.currentHours)}
             </p>
@@ -29,7 +33,13 @@ export function ComparisonSection({ comparison }: { comparison: SpecialistCompar
             <p className="text-[11px] font-semibold uppercase tracking-label text-accent-strong">
               Specialist Supported
             </p>
-            <p className="mt-2 text-[13px] text-slate-light">Leadership Time</p>
+            <p className="mt-2 flex items-center gap-1.5 text-[13px] text-slate-light">
+              Leadership Time
+              <InfoTooltip>
+                An estimate of leadership hours if candidates were better qualified before
+                reaching your Hiring Manager and leadership team.
+              </InfoTooltip>
+            </p>
             <p className="mt-1 numeric font-serif-display text-4xl text-accent-strong">
               {formatHours(comparison.specialistSupportedHours)}
             </p>
@@ -43,13 +53,17 @@ export function ComparisonSection({ comparison }: { comparison: SpecialistCompar
           <p className="mt-3 numeric font-serif-display text-[56px] leading-none text-accent-strong sm:text-[68px]">
             <AnimatedCounter value={comparison.hoursReturned} duration={1.2} />
           </p>
-          <p className="mt-2 text-[13px] font-semibold uppercase tracking-label text-accent-strong">
+          <p className="mt-2 flex items-center justify-center gap-1.5 text-[13px] font-semibold uppercase tracking-label text-accent-strong">
             Hours Returned
+            <InfoTooltip>
+              The difference between your current process and the specialist-supported estimate:
+              the hours your leaders would get back.
+            </InfoTooltip>
           </p>
           <p className="mt-5 text-[15px] text-ink-soft">
             Equivalent to nearly{" "}
             <span className="font-semibold text-ink">{comparison.daysReturned} working days</span>{" "}
-            returned to your Engineering Leaders.
+            given back to your engineering leaders.
           </p>
         </div>
       </div>

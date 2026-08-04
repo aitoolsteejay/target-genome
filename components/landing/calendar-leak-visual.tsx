@@ -54,7 +54,7 @@ export function CalendarLeakVisual() {
     <div className="relative border border-border-strong bg-paper-raised shadow-[0_1px_2px_rgba(28,26,23,0.04),0_16px_48px_-24px_rgba(28,26,23,0.25)]">
       <div className="flex items-center justify-between border-b border-border px-5 py-3.5">
         <span className="text-[11px] font-semibold uppercase tracking-label text-slate">
-          This Week — Hiring Manager
+          This Week: Hiring Manager
         </span>
       </div>
 

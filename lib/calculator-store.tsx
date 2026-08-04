@@ -5,11 +5,18 @@ import type { CalculatorInput, TimeLeakReport } from "./types";
 import { computeTimeLeakReport } from "./calculations";
 import { EXAMPLE_INPUT } from "@/data/example-input";
 
+export class ReportGenerationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ReportGenerationError";
+  }
+}
+
 interface CalculatorStoreValue {
   input: CalculatorInput | null;
   report: TimeLeakReport | null;
   hydrated: boolean;
-  submitInput: (input: CalculatorInput) => TimeLeakReport;
+  submitInput: (input: CalculatorInput) => Promise<TimeLeakReport>;
   loadExample: () => TimeLeakReport;
   reset: () => void;
 }
@@ -27,15 +34,16 @@ export function CalculatorStoreProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    // One-time hydration from sessionStorage after mount — intentionally an
-    // effect (not a lazy initializer) so server and client render the same
-    // `null` state on first paint and avoid a hydration mismatch.
+    // One-time hydration from sessionStorage after mount. This is
+    // intentionally an effect (not a lazy initializer) so server and client
+    // render the same `null` state on first paint and avoid a hydration
+    // mismatch.
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setState(JSON.parse(raw));
     } catch {
-      /* sessionStorage unavailable — proceed without persistence */
+      /* sessionStorage unavailable, proceed without persistence */
     }
     setHydrated(true);
   }, []);
@@ -51,15 +59,34 @@ export function CalculatorStoreProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const submitInput = useCallback(
-    (input: CalculatorInput) => {
-      const report = computeTimeLeakReport(input);
+    async (input: CalculatorInput) => {
+      const res = await fetch("/api/generate-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input }),
+      });
+
+      const payload = await res.json().catch(() => null);
+
+      if (!res.ok || !payload?.report) {
+        throw new ReportGenerationError(
+          payload?.error || "Report generation failed. Please try again."
+        );
+      }
+
+      const report: TimeLeakReport = payload.report;
       persist({ input, report });
       return report;
     },
     [persist]
   );
 
-  const loadExample = useCallback(() => submitInput(EXAMPLE_INPUT), [submitInput]);
+  const loadExample = useCallback(() => {
+    // Bypasses the API/AI entirely so "View Example Report" stays instant.
+    const report = computeTimeLeakReport(EXAMPLE_INPUT);
+    persist({ input: EXAMPLE_INPUT, report });
+    return report;
+  }, [persist]);
 
   const reset = useCallback(() => persist(null), [persist]);
 

@@ -12,13 +12,13 @@ const steps = [
     icon: Calculator,
     title: "See the leadership hours",
     description:
-      "Every resume pass, sync, interview and rejection converted into hours — and into a share of your senior leaders' calendars.",
+      "Every resume review, sync, interview, and rejection turned into hours, and into a share of your senior leaders' calendars.",
   },
   {
     icon: GitBranch,
     title: "Find where it leaks",
     description:
-      "A ranked breakdown of exactly which stages consume the most executive time relative to the hires they produce.",
+      "A ranked list showing exactly which stages take up the most executive time compared to how many hires they actually produce.",
   },
   {
     icon: SlidersHorizontal,

@@ -37,7 +37,7 @@ export function TimeLeakGraphSection({ stages }: { stages: FunnelHoursStage[] })
         <SectionHeading
           eyebrow="The Time Leak Graph"
           title="Where the hours actually go before a single hire lands."
-          description="Each bar shows the share of total leadership hours still attributable to candidates who are still in the running at that stage."
+          description="Each bar shows what percentage of your starting pool of candidates is still active at that stage. The narrower the bar, the fewer candidates are left."
         />
 
         <div className="mt-10 space-y-1">

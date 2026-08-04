@@ -3,8 +3,8 @@ import type { LeadershipRoleDefinition } from "@/lib/types";
 /**
  * Mock hourly values, used only internally to compute a de-emphasised
  * opportunity-cost figure. Roles tiered "leadership" multiply leadership-
- * interview hours when several are selected together for the same rounds —
- * see lib/calculations.ts.
+ * interview hours when several are selected together for the same rounds.
+ * See lib/calculations.ts.
  */
 export const LEADERSHIP_ROLES: LeadershipRoleDefinition[] = [
   { key: "engineering_manager", label: "Engineering Manager", hourlyRateInr: 4000, tier: "interviewer" },

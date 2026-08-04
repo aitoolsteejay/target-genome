@@ -1,5 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 import { LEADERSHIP_ROLES } from "@/data/leadership-roles";
 import { formatCurrency } from "@/lib/formatters";
 import type { LeadershipRoleKey } from "@/lib/types";
@@ -21,9 +22,16 @@ export function LeadershipStep({ involvedRoles, onChange }: LeadershipStepProps)
   return (
     <div>
       <p className="text-[14px] leading-relaxed text-slate mb-5">
-        Which people usually interview candidates? Select everyone who typically sits in a
-        round — this shapes how much of the process depends on senior time.
+        Which people usually interview candidates? Select everyone who typically joins a round.
+        This determines how much of the process depends on senior people&apos;s time.
       </p>
+      <div className="mb-4 flex items-center gap-1.5 text-[12px] text-slate-light">
+        <span>Each role shows an estimated hourly value.</span>
+        <InfoTooltip>
+          A rough, illustrative value for one hour of this person&apos;s time. We use it only to
+          show a rupee estimate of the time cost. It never affects the hours themselves.
+        </InfoTooltip>
+      </div>
       <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         {LEADERSHIP_ROLES.map((role) => {
           const checked = involvedRoles.includes(role.key);

@@ -1,6 +1,6 @@
 const insights = [
   "The cost of a hire is not the recruitment fee. It is the Director, VP, or CTO time spent interviewing people who were never the right fit.",
-  "Five interview stages do not reduce hiring mistakes. They redistribute the risk of a mistake onto your most expensive calendars.",
+  "Five interview stages do not reduce hiring mistakes. They just move the risk of a bad hire onto your most expensive calendars.",
   "Reducing leadership time is not about hiring less carefully. It is about deciding earlier who deserves that time at all.",
 ];
 

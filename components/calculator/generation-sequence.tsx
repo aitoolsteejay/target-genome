@@ -16,10 +16,7 @@ const STAGES = [
 ];
 
 const STAGE_DURATION_MS = 700;
-
-interface GenerationSequenceProps {
-  onComplete: () => void;
-}
+const REASSURANCE_DELAY_MS = 5000;
 
 interface Node {
   x: number;
@@ -44,21 +41,31 @@ function useNetworkNodes(count: number): Node[] {
   }, [count]);
 }
 
-export function GenerationSequence({ onComplete }: GenerationSequenceProps) {
+/**
+ * Purely presentational: it doesn't know when the real generation call
+ * finishes. It advances through the stage messages and then holds on the
+ * last one (with a reassurance line after a while) for as long as the
+ * parent keeps it mounted. The parent unmounts it once the async
+ * report-generation call resolves or fails.
+ */
+export function GenerationSequence() {
   const [stageIndex, setStageIndex] = useState(0);
+  const [showReassurance, setShowReassurance] = useState(false);
   const reduceMotion = useReducedMotion();
   const nodes = useNetworkNodes(32);
 
   useEffect(() => {
-    if (stageIndex >= STAGES.length - 1) {
-      const finalTimer = setTimeout(onComplete, STAGE_DURATION_MS + 200);
-      return () => clearTimeout(finalTimer);
-    }
+    if (stageIndex >= STAGES.length - 1) return;
     const timer = setTimeout(() => setStageIndex((i) => i + 1), STAGE_DURATION_MS);
     return () => clearTimeout(timer);
-  }, [stageIndex, onComplete]);
+  }, [stageIndex]);
 
-  const progress = ((stageIndex + 1) / STAGES.length) * 100;
+  useEffect(() => {
+    const timer = setTimeout(() => setShowReassurance(true), REASSURANCE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const progress = Math.min(96, ((stageIndex + 1) / STAGES.length) * 100);
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-charcoal px-6">
@@ -115,7 +122,9 @@ export function GenerationSequence({ onComplete }: GenerationSequenceProps) {
         <div className="mt-8">
           <Progress value={progress} aria-label="Calculation progress" />
           <div className="mt-2 flex justify-between text-[11px] text-stone-100/40">
-            <span>Step {stageIndex + 1} of {STAGES.length}</span>
+            <span>
+              Step {Math.min(stageIndex + 1, STAGES.length)} of {STAGES.length}
+            </span>
             <span>{Math.round(progress)}%</span>
           </div>
         </div>
@@ -135,6 +144,18 @@ export function GenerationSequence({ onComplete }: GenerationSequenceProps) {
             </motion.p>
           </AnimatePresence>
         </div>
+
+        <AnimatePresence>
+          {showReassurance && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-4 text-center text-[12.5px] text-stone-100/45"
+            >
+              Writing a tailored summary takes a little longer than the maths. Still working.
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

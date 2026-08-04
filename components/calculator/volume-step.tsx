@@ -1,5 +1,6 @@
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { InfoTooltip } from "@/components/shared/info-tooltip";
 
 interface VolumeStepProps {
   hiresNeeded: number;
@@ -8,26 +9,24 @@ interface VolumeStepProps {
 
 export function VolumeStep({ hiresNeeded, onChange }: VolumeStepProps) {
   return (
-    <div className="max-w-md">
-      <div className="flex items-center justify-between">
-        <Label htmlFor="hires-slider" className="mb-0">
-          How many people are you hiring?
+    <div className="max-w-xs">
+      <div className="flex items-center gap-2">
+        <Label htmlFor="hires-input" className="mb-0">
+          How many people are you hiring for this role?
         </Label>
-        <span className="numeric font-serif-display text-2xl text-accent-strong">{hiresNeeded}</span>
+        <InfoTooltip>
+          The number of people you plan to hire for this exact role. We use this to show the
+          total time cost across all of those hires, not just one.
+        </InfoTooltip>
       </div>
-      <Slider
-        id="hires-slider"
-        className="mt-4"
+      <Input
+        id="hires-input"
+        type="number"
         min={1}
-        max={20}
-        step={1}
-        value={[hiresNeeded]}
-        onValueChange={([v]) => onChange(v)}
+        value={hiresNeeded}
+        onChange={(e) => onChange(Math.max(1, Number(e.target.value) || 1))}
+        className="mt-3"
       />
-      <div className="mt-1.5 flex justify-between text-[11px] text-slate-light">
-        <span>1</span>
-        <span>20</span>
-      </div>
     </div>
   );
 }

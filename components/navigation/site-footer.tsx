@@ -10,7 +10,10 @@ export function SiteFooter() {
             <span className="flex h-6 w-6 items-center justify-center border border-ink text-[10px] font-serif-display font-semibold">
               HM
             </span>
-            <span className="font-serif-display text-[15px] text-ink">Hiring Manager Time Leak</span>
+            <span className="flex flex-col leading-tight">
+              <span className="font-serif-display text-[15px] text-ink">Hiring Manager Time Leak</span>
+              <span className="text-[10px] font-semibold uppercase tracking-label text-accent">By Antal</span>
+            </span>
           </div>
 
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate" aria-label="Footer">

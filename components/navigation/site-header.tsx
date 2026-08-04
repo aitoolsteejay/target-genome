@@ -21,8 +21,13 @@ export function SiteHeader() {
           <span className="flex h-7 w-7 items-center justify-center border border-ink text-[11px] font-serif-display font-semibold">
             HM
           </span>
-          <span className="font-serif-display text-[16px] tracking-tight text-ink">
-            Hiring Manager Time Leak
+          <span className="flex flex-col leading-tight">
+            <span className="font-serif-display text-[16px] tracking-tight text-ink">
+              Hiring Manager Time Leak
+            </span>
+            <span className="text-[10.5px] font-semibold uppercase tracking-label text-accent">
+              By Antal
+            </span>
           </span>
         </Link>
 

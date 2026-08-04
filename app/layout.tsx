@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { CalculatorStoreProvider } from "@/lib/calculator-store";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PoweredByBadge } from "@/components/shared/powered-by-badge";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,7 +20,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Hiring Manager Time Leak",
+  title: "Hiring Manager Time Leak | Antal",
   description:
     "Discover how many leadership hours disappear every time you hire. Quantify the hidden executive time cost of your interview process.",
 };
@@ -39,6 +40,7 @@ export default function RootLayout({
         <CalculatorStoreProvider>
           <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
         </CalculatorStoreProvider>
+        <PoweredByBadge />
         <Analytics />
       </body>
     </html>

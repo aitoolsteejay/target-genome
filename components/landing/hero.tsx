@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MiniReportPreview } from "@/components/landing/mini-report-preview";
+import { CalendarLeakVisual } from "@/components/landing/calendar-leak-visual";
 
 export function Hero() {
   return (
@@ -17,16 +17,16 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="text-[11px] font-semibold uppercase tracking-label text-accent-strong"
           >
-            Talent Intelligence, Before the Search
+            Leadership Time, Not Recruitment Cost
           </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05 }}
-            className="mt-5 font-serif-display text-[38px] leading-[1.1] text-ink sm:text-[48px] lg:text-[54px]"
+            className="mt-5 font-serif-display text-[38px] leading-[1.1] text-ink sm:text-[48px] lg:text-[52px]"
           >
-            Understand the people behind your talent pool.
+            Your hiring process is leaking leadership time.
           </motion.h1>
 
           <motion.p
@@ -35,9 +35,9 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.12 }}
             className="mt-6 max-w-xl text-[16px] leading-relaxed text-slate sm:text-[17px]"
           >
-            Enter a difficult role and uncover the career patterns, motivations, movement
-            signals, competing employers, search risks, and hidden talent segments shaping your
-            hiring market.
+            Every unsuitable interview steals time from your Engineering Leaders, Product Heads
+            and Hiring Managers. Most companies measure recruitment cost. Very few measure
+            leadership time.
           </motion.p>
 
           <motion.div
@@ -47,13 +47,13 @@ export function Hero() {
             className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
             <Button asChild size="lg" variant="accent">
-              <Link href="/generate">
-                Generate a Talent Genome
+              <Link href="/calculate">
+                Calculate My Time Leak
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/sample/principal-backend-engineer">Explore a Sample Report</Link>
+              <Link href="/example">View Example Report</Link>
             </Button>
           </motion.div>
 
@@ -63,12 +63,12 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-8 text-[13px] text-slate-light"
           >
-            No sign-up required to view a sample. Full reports take under 10 seconds to generate.
+            Runs entirely in your browser. No sign-up, no data leaves this session.
           </motion.p>
         </div>
 
         <div className="lg:pt-4">
-          <MiniReportPreview />
+          <CalendarLeakVisual />
         </div>
       </div>
     </section>

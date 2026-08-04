@@ -1,35 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  /* Surfaces */
-  --color-paper: #faf8f4;
+  /* Surfaces — warm white */
+  --color-paper: #fbf8f3;
   --color-paper-raised: #ffffff;
-  --color-stone-100: #f2efe9;
-  --color-stone-200: #e8e3da;
-  --color-border: #ddd6c9;
-  --color-border-strong: #c9c0b1;
+  --color-stone-100: #f3eee5;
+  --color-stone-200: #e9e1d3;
+  --color-border: #e6ddcf;
+  --color-border-strong: #d3c6b2;
 
-  /* Ink */
-  --color-ink: #14201c;
-  --color-ink-soft: #2a3733;
-  --color-slate: #5b6660;
-  --color-slate-light: #838d86;
+  /* Ink — deep charcoal */
+  --color-ink: #1c1a17;
+  --color-ink-soft: #34302b;
+  --color-slate: #6b6259;
+  --color-slate-light: #9c9188;
 
   /* Dark editorial surface */
-  --color-charcoal: #10161a;
-  --color-charcoal-raised: #182022;
+  --color-charcoal: #15130f;
+  --color-charcoal-raised: #1d1a15;
 
-  /* Accent — deep emerald */
-  --color-accent: #0e5c4b;
-  --color-accent-strong: #0a4438;
-  --color-accent-soft: #e4efe9;
-  --color-accent-mist: #f0f5f2;
+  /* Accent — emerald */
+  --color-accent: #0f6d4e;
+  --color-accent-strong: #0b4f39;
+  --color-accent-soft: #e2f0e8;
+  --color-accent-mist: #f1f7f3;
 
-  /* Signal colours */
-  --color-amber: #a8631a;
-  --color-amber-soft: #f6ead6;
-  --color-red: #9a2f2f;
-  --color-red-soft: #f5e3e0;
+  /* Calendar / signal colours */
+  --color-grey: #8a8178;
+  --color-grey-soft: #eeeae3;
+  --color-orange: #b56a1f;
+  --color-orange-soft: #f6ead9;
+  --color-red: #9d3a2e;
+  --color-red-soft: #f5e2de;
 
   --radius-card: 3px;
 }
@@ -58,8 +60,10 @@
   --color-accent-soft: var(--color-accent-soft);
   --color-accent-mist: var(--color-accent-mist);
 
-  --color-amber: var(--color-amber);
-  --color-amber-soft: var(--color-amber-soft);
+  --color-grey: var(--color-grey);
+  --color-grey-soft: var(--color-grey-soft);
+  --color-orange: var(--color-orange);
+  --color-orange-soft: var(--color-orange-soft);
   --color-red: var(--color-red);
   --color-red-soft: var(--color-red-soft);
 

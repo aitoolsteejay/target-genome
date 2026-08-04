@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/#how-it-works", label: "How It Works" },
-  { href: "/sample/principal-backend-engineer", label: "Sample Report" },
-  { href: "/#intelligence", label: "About the Intelligence" },
+  { href: "/example", label: "Example Report" },
 ];
 
 export function SiteHeader() {
@@ -20,10 +19,10 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <span className="flex h-7 w-7 items-center justify-center border border-ink text-[11px] font-serif-display font-semibold">
-            TG
+            HM
           </span>
-          <span className="font-serif-display text-[17px] tracking-tight text-ink">
-            Talent Genome
+          <span className="font-serif-display text-[16px] tracking-tight text-ink">
+            Hiring Manager Time Leak
           </span>
         </Link>
 
@@ -41,7 +40,7 @@ export function SiteHeader() {
 
         <div className="hidden md:block">
           <Button asChild size="sm" variant="accent">
-            <Link href="/generate">Generate a Genome</Link>
+            <Link href="/calculate">Calculate My Time Leak</Link>
           </Button>
         </div>
 
@@ -74,8 +73,8 @@ export function SiteHeader() {
             </Link>
           ))}
           <Button asChild size="sm" variant="accent" className="mt-2 w-full">
-            <Link href="/generate" onClick={() => setOpen(false)}>
-              Generate a Genome
+            <Link href="/calculate" onClick={() => setOpen(false)}>
+              Calculate My Time Leak
             </Link>
           </Button>
         </nav>

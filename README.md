@@ -1,26 +1,26 @@
-# Talent Genome
+# Hiring Manager Time Leak
 
-A premium talent-intelligence prototype for a specialist recruitment company. Enter a
-difficult, niche, or senior role and receive a deep, visual, insight-led Talent Genome
-Report — recruitable market size, career patterns, motivations, switching windows,
-competitive pressure, adjacent talent, search risks, and a recommended strategy.
+> "Discover how many leadership hours disappear every time you hire."
 
-Every submitted brief is sent to **Google Gemini**, which generates the full analytical
-content for that specific role. If no Gemini API key is configured (e.g. a fresh clone, or
-before you've added the key on Vercel), the app automatically falls back to four
-fully-modelled sample markets matched by keyword — so it's always fully functional, with or
-without a key.
+A premium, editorial calculator that quantifies the hidden cost of hiring: not recruitment
+fees, but the hours your Engineering Directors, CTOs, Product Heads and Hiring Managers spend
+interviewing candidates who were never the right fit. The goal is one reaction — *"I never
+realised hiring was costing me this much leadership time."*
 
-## Run it locally
+Internal TA still owns hiring. The message throughout is that specialist recruiters reduce
+leadership time, not that they replace anyone.
+
+Everything runs client-side. **No backend, no database, no authentication, no external API** —
+every number is computed in the browser from a documented mock calculation engine.
+
+## Install and run
 
 ```bash
 npm install
-cp .env.example .env.local   # then add your Gemini key (optional — see below)
 npm run dev
 ```
 
-Open http://localhost:3000. If port 3000 is taken, Next.js will pick the next free port —
-check the terminal output.
+Open http://localhost:3000 (or whatever port the terminal prints if 3000 is taken).
 
 ```bash
 npm run build && npm run start   # production build
@@ -28,19 +28,10 @@ npm run lint                     # ESLint
 npx tsc --noEmit                 # type-check
 ```
 
-### Adding a Gemini API key
-
-1. Get a key at https://aistudio.google.com/apikey.
-2. Locally: put `GEMINI_API_KEY=your-key` in `.env.local` (gitignored).
-3. On Vercel: **Project → Settings → Environment Variables** → add `GEMINI_API_KEY` (and
-   optionally `GEMINI_MODEL`, default `gemini-2.5-flash`) → redeploy.
-
-Without the key, `/api/generate-report` skips Gemini entirely and returns one of the four
-sample reports (nearest match by keyword) — no error, no broken UI.
-
 ## Deploying to Vercel
 
-This is a standard Next.js App Router project — Vercel detects it automatically.
+This is a fully static/client-rendered Next.js App Router project — no environment variables,
+no serverless functions, no database. Vercel detects it automatically.
 
 ```bash
 npm i -g vercel   # if you don't have the CLI
@@ -48,131 +39,151 @@ vercel             # first deploy, follow the prompts
 vercel --prod      # subsequent production deploys
 ```
 
-Or connect the repo at https://vercel.com/new and Vercel will build and deploy on every
-push. Either way:
+Or connect the repo at https://vercel.com/new. Every route (`/`, `/calculate`, `/example`,
+`/report`) is pre-rendered as static content — there is nothing else to configure.
 
-- Add `GEMINI_API_KEY` under **Environment Variables** before your first real report
-  generation (the site works without it, but every request uses the fallback path).
-- The generation route (`app/api/generate-report/route.ts`) runs on the **Node.js runtime**
-  (not Edge — the Gemini SDK needs it) and declares `maxDuration = 60` for the occasional
-  slower generation. Vercel's Hobby plan supports this out of the box; if you're on an
-  older plan/config with a hard 10s cap, either upgrade or lower `maxDuration` and accept
-  that very large/complex briefs may time out into the fallback path.
-- No database, queue, or other external service is required — session state lives in
-  `sessionStorage` in the browser.
+## The user journey
 
-## Structure
+1. **Homepage** (`app/page.tsx`) — the headline, an animated calendar visual showing interview
+   blocks fading out with "Only 1 candidate reached offer," and two CTAs.
+2. **Calculator** (`app/calculate/page.tsx`) — a 5-step wizard (role, hiring volume, current
+   funnel counts, interview-time assumptions, leadership involvement), preloaded with a
+   realistic example so it's never a blank form.
+3. **Generation sequence** (`components/calculator/generation-sequence.tsx`) — a premium
+   animated sequence (network visual + rotating status messages) shown for a couple of
+   seconds before the reveal, even though the underlying calculation is instant.
+4. **Report** (`app/report/page.tsx`, composed in `components/report/report-view.tsx`) — the
+   full breakdown: animated headline hour count, a vertical timeline of nine time categories,
+   the "Hidden Cost" insight card, an executive calendar visualisation, a Sankey-style time-leak
+   funnel, a specialist-supported comparison, a ranked "where the time is lost" list, a live
+   "What If" simulator, a consulting-style executive summary, and — only after all of that — a
+   lead-capture form.
+5. **Example report** (`app/example/page.tsx`) — the same report, instantly, using a canned
+   input so "View Example Report" never requires filling out the form first.
+
+## File structure
 
 ```
 app/
-  page.tsx                     Homepage
-  generate/page.tsx            Role Intelligence form + async generation + error/retry states
-  report/page.tsx              Report for a freshly-generated brief (reads session state)
-  report/brief/page.tsx        Standalone printable one-page CHRO brief
-  sample/[slug]/page.tsx       The 4 canned sample reports
-  api/generate-report/route.ts POST endpoint: brief in, full report out (Gemini or fallback)
+  page.tsx                  Homepage
+  calculate/page.tsx        5-step input wizard + generation sequence
+  report/page.tsx           The full report (reads session state)
+  example/page.tsx          Report for the canned example input
 components/
-  landing/                     Homepage sections
-  form/                        Role Intelligence form fields
-  report/                      Report shell, header, generation sequence, and one
-                                component per report section (funnel, career DNA,
-                                employer ecosystem, simulator, risks, etc.)
-  navigation/                  Site header/footer, report section nav (desktop + mobile)
-  shared/                      Cross-cutting bits: section heading, insight panel,
-                                animated counter, disclaimer, status badges
-  ui/                          Small local design-system primitives (button, input,
-                                select, slider, tabs, tooltip, accordion, ...)
+  landing/                  Homepage sections (hero, calendar visual, how-it-works, dark insight)
+  calculator/                Wizard step components + the generation sequence
+  report/
+    report-view.tsx          Composes every report section
+    report-header.tsx        The animated headline number
+    lead-capture-section.tsx  Post-report lead form
+    sections/                 One component per report section (timeline, hidden cost,
+                               executive calendar, time-leak graph, comparison, loss items,
+                               what-if simulator, executive summary)
+  navigation/                Site header/footer
+  shared/                    Animated counter, section heading, insight panel, disclaimer
+  ui/                        Local design-system primitives (button, input, select, slider,
+                             checkbox, switch, tabs, tooltip, accordion, badge, card, ...)
 data/
-  sample-searches/             One file per sample role, each exporting a full
-                                SearchBrief + TalentGenomeReport (used as fallback content
-                                and as the four browsable /sample/[slug] reports)
-  resistance.ts                Candidate resistance patterns (shared across all reports)
-  comparable-searches.ts       "147 comparable searches" intelligence (shared)
-  switching-signals.ts         Generic switching-timing signals (shared)
-  ta-guidance.ts                Internal TA / Hybrid / Specialist criteria (shared)
+  role-options.ts            The role dropdown list
+  leadership-roles.ts        The 8 leadership roles + mock hourly rates + tier
+  example-input.ts           The preloaded/example CalculatorInput
 lib/
-  types.ts                     The entire data model (SearchBrief, TalentGenomeReport, ...)
-  calculations.ts               Documented demo heuristics (funnel math, scenario simulator)
-  gemini/
-    prompt.ts                   Builds the Gemini prompt from a SearchBrief
-    generated-content-schema.ts Gemini responseSchema + mirrored Zod validation schema
-    client.ts                   Calls Gemini, validates, retries once, throws on failure
-  report-assembler.ts           Combines Gemini content + derived + shared data into a report
-  report-generator.ts           Fallback: maps a brief to the nearest sample market
-  report-store.tsx              Client-side session state (React context + sessionStorage,
-                                 calls /api/generate-report)
-  validate-brief.ts             Form validation
-hooks/
-  use-report-navigation.ts      Scroll-spy for the report's section nav
+  types.ts                   The entire data model
+  calculations.ts            The calculation engine (see below) — every constant documented
+  calculator-store.tsx       Client-side session state (React context + sessionStorage)
 ```
 
-## How a report is generated
+## Calculation logic
 
-1. `app/generate/page.tsx` validates the brief client-side, then POSTs it to
-   `/api/generate-report` while showing the generation sequence (which loops until the
-   request resolves — it doesn't know how long Gemini will take).
-2. The route validates the brief server-side, and if `GEMINI_API_KEY` is set, calls
-   `generateReportContentWithGemini()` (`lib/gemini/client.ts`), which sends a detailed
-   prompt (`lib/gemini/prompt.ts`) and asks for **structured JSON output** matching
-   `GENERATED_CONTENT_GEMINI_SCHEMA`. The response is validated against a mirrored Zod
-   schema; a schema mismatch triggers one retry with a stricter reminder.
-3. `lib/report-assembler.ts` combines that generated content with fields that are derived
-   in code rather than generated (`metadata`, `executiveMetrics`, `scenarioBaseline`,
-   `scenarioPresets` — all deterministic functions of the brief and the generated
-   `talentPool`) and static shared data (`resistanceFactors`, `comparableSearches`,
-   `switchingSignals`, `taGuidance.guidance` — genuinely portfolio-wide patterns, not
-   role-specific) into a complete `TalentGenomeReport`.
-4. If Gemini isn't configured, or fails, or its output doesn't validate twice in a row, the
-   route silently falls back to `lib/report-generator.ts`, which matches the brief to the
-   nearest of the four hand-authored sample reports by keyword and overlays the submitted
-   brief on top. The client only sees a hard error if *that* also fails.
+`lib/calculations.ts` turns a `CalculatorInput` into a `TimeLeakReport` in one synchronous
+pass, no network involved. Nine genuinely distinct categories are computed so they sum exactly
+to the reported total (no double counting):
 
-## Key calculation assumptions
+| Category | Formula |
+|---|---|
+| Resume Reviews | `resumesReviewedByManager × 6 min ÷ 60` |
+| Interview Scheduling | `totalInterviewRounds × schedulingOverheadMins ÷ 60` |
+| Recruiter Sync | `recruiterScreens × 10 min ÷ 60` |
+| Technical Interviews | `technicalInterviews × (duration + prep) ÷ 60` |
+| Hiring Manager Interviews | `hiringManagerInterviews × (duration + prep) ÷ 60` |
+| Leadership Interviews | `leadershipInterviews × leadershipMultiplier × (duration + prep) ÷ 60` |
+| Feedback Discussions | `totalInterviewRounds × feedbackMins ÷ 60` |
+| Rejected Candidates | `max(0, technicalInterviews − offers) × 15 min ÷ 60` |
+| Offer Fallout | `max(0, offers − joins) × 3 hours` |
 
-Everything in `lib/calculations.ts` and the numeric-consistency rules in
-`lib/gemini/prompt.ts` are documented heuristics, not a validated market model:
+`leadershipMultiplier` is the number of selected **leadership-tier** roles (Director, VP, CTO,
+Founder, Product Head — as opposed to interviewer-tier roles like Engineering Manager or
+Senior Engineer). Selecting three leadership roles who all sit in on the same rounds triples
+the Leadership Interviews line — this is the lever "Move CTO interview later" in the What-If
+simulator relaxes.
 
-- Gemini is instructed to keep `realisticallyRecruitable` at 5%–15% of
-  `technicallyRelevant`, `highProbabilityMovers` at 15%–25% of it, and to build the 7-stage
-  funnel as a monotonically decreasing narrative ending at `realisticallyRecruitable`.
-- The **Search Assumption Simulator** recomputes recruitable pool, competitive pressure,
-  search duration, and offer-acceptance probability live from a `ScenarioBaseline` using
-  multiplicative levers (e.g. allowing remote-across-country multiplies the recruitable
-  pool by ~2.3×, each year shaved off the experience floor adds ~14%, dropping a mandatory
-  interview round shifts acceptance probability and duration). Every constant is commented
-  in place in `lib/calculations.ts`.
-- `classifyBriefBreadth()` flags a brief as "narrow" or "broad" based on how many
-  mutually-reinforcing constraints (tight experience band, onsite-only, mandatory domain,
-  3+ mandatory skills, 5+ interview rounds) are stacked — not on any real supply/demand
-  signal.
-- `ScenarioBaseline` is derived directly from the submitted brief's own numbers (comp
-  ceiling, experience floor, interview rounds, notice period, secondary-skill count), not
-  generated — so the live simulator's starting point always matches what was actually
-  submitted.
+From there:
+- **Working days / weeks equivalent** = total hours ÷ 8 or ÷ 40.
+- **Specialist-supported comparison**: removes ~35% of Technical + Hiring Manager + Leadership
+  interview hours (the share attributable to candidates who shouldn't have reached that stage)
+  and ~50% of Rejected-Candidate overhead, capped at 70% of the total.
+- **Where the Time Is Lost**: four fixed, always-computed loss types (unsuitable technical
+  interviews, leadership involved too early, stage-count overhead, offer fallout), each with a
+  formula tied to real categories, ranked by hours descending.
+- **What-If simulator** (`computeWhatIf`) recomputes live from the *already-generated report's*
+  categories — not from raw input — using percentage levers for process compression, recruiter
+  qualification, offer-fallout reduction, and a boolean for delaying leadership involvement.
+- **Executive calendar**: block counts and the "wasted %" annotation are derived from the same
+  rejected/declined counts as the categories, then capped and distributed across a 5-day grid
+  for the visual (not literally scheduled by time slot).
 
-## Easiest places to connect real data
+## Mock assumptions
 
-- `lib/gemini/prompt.ts` — the single place to change what Gemini is told about the market;
-  add few-shot examples or firm-specific playbooks here without touching any component.
-- `lib/gemini/generated-content-schema.ts` — if you need to change what Gemini generates
-  (add/remove a field), update the Zod schema and the mirrored `GENERATED_CONTENT_GEMINI_SCHEMA`
-  together, then update `lib/report-assembler.ts`'s mapping.
-- `lib/report-generator.ts` — the fallback path; replace with a call to a real
-  search/market-intelligence service if you want the "no AI key" path to use real data too.
-- `lib/calculations.ts` — replace the heuristic constants with a model trained on validated
-  internal search data once you have it; the function signatures (`computeScenarioOutput`,
-  `classifyBriefBreadth`) are the integration seam.
-- `components/report/lead-capture-section.tsx` — currently a local-only mock submission;
-  wire the two form actions to your actual CRM/email endpoints.
+Every constant is a documented illustrative heuristic, not a validated benchmark:
 
-## Limitations of this prototype
+- Resume review: 6 minutes/resume. Recruiter sync: 10 minutes/screen. Rejection overhead: 15
+  minutes/candidate. Offer-fallout rework: 3 hours/declined offer.
+- Mock hourly rates (`data/leadership-roles.ts`): Engineering Manager ₹4,000, Senior Engineer
+  ₹3,000, Principal Engineer ₹5,500, Director ₹8,000, VP ₹10,000, CTO/Founder ₹12,000, Product
+  Head ₹9,000 — used only to compute a de-emphasised opportunity-cost figure, never surfaced as
+  a headline number.
+- Specialist-supported reduction: 35% of technical/HM/leadership hours, 50% of rejection
+  overhead, capped at 70% of the total.
+- What-If levers: process compression cuts scheduling (−60%) and feedback (−50%) most, interview
+  time least (−15%); recruiter qualification cuts unsuitable technical interviews (−40%) and
+  rejection overhead (−50%); delaying leadership interviews removes 40% of that category.
 
-- All market intelligence — whether Gemini-generated or from the fallback samples — is
-  simulated and clearly disclaimed in the UI. Gemini produces plausible, internally
-  consistent, well-reasoned figures; it is not a source of real labour-market data.
-- Gemini calls add real latency (typically several seconds) and, once you add a billed API
-  key, real cost per report generation — there's no caching or rate limiting built in.
-- The lead-capture form and "send me the brief" action do not send real email — no CRM or
-  email API is wired up.
-- PDF export uses the browser's native print dialog ("Print" / "Download PDF" both call
-  `window.print()`) rather than a dedicated PDF-generation service.
+Replace the constants at the top of `lib/calculations.ts` — not the function shapes — once real
+interview-analytics or ATS timing data exists.
+
+## Future integrations
+
+- **ATS integration**: pull `resumesReviewedByManager`, interview counts, and actual scheduled
+  durations directly from Greenhouse/Lever/Ashby instead of manual entry — `CalculatorInput` is
+  the exact shape an ATS webhook would need to populate.
+- **Calendar integration**: read actual interview block durations from Google/Outlook calendars
+  for the Hiring Manager and leadership participants, replacing the fixed duration/prep/feedback
+  assumptions with real per-org averages.
+- **Compensation data**: replace the mock hourly rates with real (anonymised) banded
+  compensation data to make the opportunity-cost figure defensible in an internal business case.
+- **Benchmarking**: aggregate anonymised submissions across companies to replace the fixed 35%
+  specialist-reduction assumption with a real distribution by role/seniority/industry.
+- **CRM handoff**: wire the lead-capture form (`components/report/lead-capture-section.tsx`) to
+  a real CRM/email endpoint instead of the current local-only mock submission.
+
+## Where AI could improve the recommendations
+
+- **Personalised loss diagnosis**: today, "Where the Time Is Lost" always surfaces the same four
+  loss types with formula-driven hours. An LLM given the full `CalculatorInput` (role, seniority
+  implied by title, industry norms) could identify *role-specific* leaks a fixed formula can't —
+  e.g. a Designer search losing time to portfolio-review overhead rather than technical-interview
+  overload.
+- **Narrative executive summary**: the current summary is a single template with one variable
+  slot (the top loss item). An LLM could write a genuinely bespoke summary that references the
+  specific combination of inputs (e.g. calling out that a 90-day-open, previously-failed search
+  compounds the leadership-time problem beyond what the raw hours suggest).
+- **Smarter What-If defaults**: rather than generic 0–100% sliders, an LLM could recommend a
+  starting scenario tailored to the submitted process (e.g. "your bottleneck is stage count, not
+  qualification — try this preset first").
+- **Natural-language process intake**: let a hiring manager describe their process in a
+  paragraph ("we do a recruiter call, two technical rounds, then the whole leadership team
+  weighs in") and have an LLM extract the structured `CalculatorInput` fields, instead of
+  requiring the 5-step form for a first pass.
+
+All of the above are deliberately *not* implemented — the brief for this build was mock
+calculations only, no backend, no external API.

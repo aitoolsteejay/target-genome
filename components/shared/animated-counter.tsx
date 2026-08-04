@@ -22,7 +22,10 @@ export function AnimatedCounter({
   prefix = "",
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
+  // Only inset the bottom edge, not the top — a counter positioned near the
+  // very top of the page (e.g. a hero/report headline) must still be able
+  // to trigger on load without requiring the user to scroll first.
+  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const reduceMotion = useReducedMotion();
   const [display, setDisplay] = useState(reduceMotion ? value : 0);
 

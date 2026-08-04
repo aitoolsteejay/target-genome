@@ -7,12 +7,12 @@ export function FinalCta() {
     <section className="border-b border-border">
       <div className="mx-auto max-w-[1400px] px-5 py-20 text-center sm:px-8 sm:py-24">
         <h2 className="mx-auto max-w-2xl font-serif-display text-[30px] leading-[1.2] text-ink sm:text-[36px]">
-          Before you open the role, understand the market.
+          Before your next hire, know what it costs your leadership team.
         </h2>
         <div className="mt-9 flex justify-center">
           <Button asChild size="lg" variant="accent">
-            <Link href="/generate">
-              Build My Talent Genome
+            <Link href="/calculate">
+              Calculate My Time Leak
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </Button>

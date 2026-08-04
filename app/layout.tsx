@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
-import { ReportStoreProvider } from "@/lib/report-store";
+import { CalculatorStoreProvider } from "@/lib/calculator-store";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
@@ -18,9 +18,9 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "Talent Genome — Talent Intelligence Reports",
+  title: "Hiring Manager Time Leak",
   description:
-    "Understand the people behind your talent pool. Talent Genome turns a difficult, niche or senior role into a confidential talent intelligence brief before you open the search.",
+    "Discover how many leadership hours disappear every time you hire. Quantify the hidden executive time cost of your interview process.",
 };
 
 export default function RootLayout({
@@ -35,9 +35,9 @@ export default function RootLayout({
       className={`${inter.variable} ${sourceSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">
-        <ReportStoreProvider>
+        <CalculatorStoreProvider>
           <TooltipProvider delayDuration={150}>{children}</TooltipProvider>
-        </ReportStoreProvider>
+        </CalculatorStoreProvider>
       </body>
     </html>
   );

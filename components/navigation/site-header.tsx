@@ -16,15 +16,12 @@ export function SiteHeader() {
     <header className="print-hide sticky top-0 z-40 border-b border-border bg-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span className="flex h-7 w-7 items-center justify-center border border-ink text-[11px] font-serif-display font-semibold">
-            HM
-          </span>
+          <Image src="/antal-logo.jpg" alt="Antal" width={28} height={28} className="rounded-full" />
           <span className="flex flex-col leading-tight">
             <span className="font-serif-display text-[16px] tracking-tight text-ink">
               Hiring Manager Time Leak
             </span>
-            <span className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-label text-accent">
-              <Image src="/antal-logo.jpg" alt="" width={14} height={14} className="rounded-full" />
+            <span className="text-[10.5px] font-semibold uppercase tracking-label text-accent">
               By Antal
             </span>
           </span>

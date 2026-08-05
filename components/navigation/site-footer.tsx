@@ -8,7 +8,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1400px] px-5 py-10 sm:px-8">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-center gap-2.5">
-            <Image src="/antal-logo.jpg" alt="Antal" width={24} height={24} className="rounded-full" />
+            <Image src="/antal-logo.jpg" alt="Antal" width={32} height={32} className="rounded-full" />
             <span className="flex flex-col leading-tight">
               <span className="font-serif-display text-[15px] text-ink">Hiring Manager Time Leak</span>
               <span className="text-[10px] font-semibold uppercase tracking-label text-accent">By Antal</span>

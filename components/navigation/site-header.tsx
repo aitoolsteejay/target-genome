@@ -16,7 +16,7 @@ export function SiteHeader() {
     <header className="print-hide sticky top-0 z-40 border-b border-border bg-paper/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <Image src="/antal-logo.jpg" alt="Antal" width={28} height={28} className="rounded-full" />
+          <Image src="/antal-logo.jpg" alt="Antal" width={38} height={38} className="rounded-full" />
           <span className="flex flex-col leading-tight">
             <span className="font-serif-display text-[16px] tracking-tight text-ink">
               Hiring Manager Time Leak

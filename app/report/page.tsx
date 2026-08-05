@@ -26,14 +26,11 @@ export default function ReportPage() {
             There isn&apos;t a Time Leak report in this session yet.
           </h1>
           <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-slate">
-            Calculate one from your own hiring process, or open the example report.
+            Calculate one from your own hiring process.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Button asChild variant="accent" size="lg">
               <Link href="/calculate">Calculate My Time Leak</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/example">View Example Report</Link>
             </Button>
           </div>
         </main>

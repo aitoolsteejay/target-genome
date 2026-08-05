@@ -2,8 +2,6 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { CalculatorInput, TimeLeakReport } from "./types";
-import { computeTimeLeakReport } from "./calculations";
-import { EXAMPLE_INPUT } from "@/data/example-input";
 
 export class ReportGenerationError extends Error {
   constructor(message: string) {
@@ -17,7 +15,6 @@ interface CalculatorStoreValue {
   report: TimeLeakReport | null;
   hydrated: boolean;
   submitInput: (input: CalculatorInput) => Promise<TimeLeakReport>;
-  loadExample: () => TimeLeakReport;
   reset: () => void;
 }
 
@@ -81,13 +78,6 @@ export function CalculatorStoreProvider({ children }: { children: ReactNode }) {
     [persist]
   );
 
-  const loadExample = useCallback(() => {
-    // Bypasses the API/AI entirely so "View Example Report" stays instant.
-    const report = computeTimeLeakReport(EXAMPLE_INPUT);
-    persist({ input: EXAMPLE_INPUT, report });
-    return report;
-  }, [persist]);
-
   const reset = useCallback(() => persist(null), [persist]);
 
   return (
@@ -97,7 +87,6 @@ export function CalculatorStoreProvider({ children }: { children: ReactNode }) {
         report: state?.report ?? null,
         hydrated,
         submitInput,
-        loadExample,
         reset,
       }}
     >

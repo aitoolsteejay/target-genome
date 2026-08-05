@@ -188,6 +188,12 @@ body {
     background: #ffffff !important;
   }
 
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
   .print-hide {
     display: none !important;
   }
@@ -200,8 +206,14 @@ body {
     break-before: page;
   }
 
-  .print-avoid-break {
+  .print-avoid-break,
+  section {
     break-inside: avoid;
+  }
+
+  section {
+    padding-top: 10mm !important;
+    padding-bottom: 10mm !important;
   }
 
   a {

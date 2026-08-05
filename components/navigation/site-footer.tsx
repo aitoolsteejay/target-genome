@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Disclaimer } from "@/components/shared/disclaimer";
 
@@ -12,13 +13,15 @@ export function SiteFooter() {
             </span>
             <span className="flex flex-col leading-tight">
               <span className="font-serif-display text-[15px] text-ink">Hiring Manager Time Leak</span>
-              <span className="text-[10px] font-semibold uppercase tracking-label text-accent">By Antal</span>
+              <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-label text-accent">
+                <Image src="/antal-logo.jpg" alt="" width={12} height={12} className="rounded-full" />
+                By Antal
+              </span>
             </span>
           </div>
 
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate" aria-label="Footer">
             <Link href="/#how-it-works" className="hover:text-ink">How It Works</Link>
-            <Link href="/example" className="hover:text-ink">Example Report</Link>
             <Link href="/calculate" className="hover:text-ink">Calculate My Time Leak</Link>
           </nav>
         </div>

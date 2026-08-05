@@ -52,9 +52,6 @@ export function Hero() {
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/example">View Example Report</Link>
-            </Button>
           </motion.div>
 
           <motion.p

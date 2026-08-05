@@ -1,15 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const navLinks = [
-  { href: "/#how-it-works", label: "How It Works" },
-  { href: "/example", label: "Example Report" },
-];
+const navLinks = [{ href: "/#how-it-works", label: "How It Works" }];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -25,7 +23,8 @@ export function SiteHeader() {
             <span className="font-serif-display text-[16px] tracking-tight text-ink">
               Hiring Manager Time Leak
             </span>
-            <span className="text-[10.5px] font-semibold uppercase tracking-label text-accent">
+            <span className="flex items-center gap-1 text-[10.5px] font-semibold uppercase tracking-label text-accent">
+              <Image src="/antal-logo.jpg" alt="" width={14} height={14} className="rounded-full" />
               By Antal
             </span>
           </span>

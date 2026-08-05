@@ -7,7 +7,7 @@ import { TimeLeakGraphSection } from "@/components/report/sections/time-leak-gra
 import { ComparisonSection } from "@/components/report/sections/comparison-section";
 import { LossItemsSection } from "@/components/report/sections/loss-items-section";
 import { ExecutiveSummarySection } from "@/components/report/sections/executive-summary-section";
-import { LeadCaptureSection } from "@/components/report/lead-capture-section";
+import { ContactSection } from "@/components/report/contact-section";
 import { Disclaimer } from "@/components/shared/disclaimer";
 import type { TimeLeakReport } from "@/lib/types";
 
@@ -31,7 +31,7 @@ export function ReportView({ report }: { report: TimeLeakReport }) {
           <Disclaimer />
         </div>
       </main>
-      <LeadCaptureSection defaultRole={report.input.role} />
+      <ContactSection />
       <SiteFooter />
     </>
   );

@@ -100,7 +100,7 @@ function buildFunnelStages(input: CalculatorInput): FunnelHoursStage[] {
   let previousPercent = 100;
 
   const stages: FunnelHoursStage[] = [
-    { id: "total", label: "100 Hours", percentOfTotal: 100, tone: "neutral" },
+    { id: "total", label: "Candidates Reviewed", percentOfTotal: 100, tone: "neutral" },
   ];
 
   const labels: Record<string, string> = {

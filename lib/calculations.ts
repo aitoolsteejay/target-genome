@@ -151,16 +151,23 @@ function buildComparison(categories: TimeCategory[], totalHours: number): Specia
   const rejected = categoryHours(categories, "rejected-candidates");
 
   // Documented heuristic: a specialist search qualifies candidates earlier,
-  // typically removing ~35% of technical/HM/leadership interview time spent
-  // on unsuitable candidates, and roughly halving rejection-closure overhead.
-  const reduction = clamp(0.35 * (technical + hm + leadership) + 0.5 * rejected, 0, totalHours * 0.7);
-  const specialistSupportedHours = Math.max(0, totalHours - reduction);
-  const hoursReturned = totalHours - specialistSupportedHours;
+  // typically removing ~55% of technical/HM/leadership interview time spent
+  // on unsuitable candidates, and most of the rejection-closure overhead.
+  const reduction = clamp(0.55 * (technical + hm + leadership) + 0.75 * rejected, 0, totalHours * 0.75);
+
+  const currentHours = roundToOneDecimal(totalHours);
+  const specialistSupportedHours = roundToOneDecimal(Math.max(0, totalHours - reduction));
+
+  // Derived from the two rounded, displayed figures above rather than the
+  // raw (unrounded) reduction. Rounding each independently from the raw
+  // reduction can make the numbers shown side by side look inconsistent
+  // (e.g. "87 hours" and "67 hours" but "Hours Returned: 19" instead of 20).
+  const hoursReturned = Math.round(currentHours) - Math.round(specialistSupportedHours);
 
   return {
-    currentHours: roundToOneDecimal(totalHours),
-    specialistSupportedHours: roundToOneDecimal(specialistSupportedHours),
-    hoursReturned: roundToOneDecimal(hoursReturned),
+    currentHours,
+    specialistSupportedHours,
+    hoursReturned,
     daysReturned: roundToOneDecimal(hoursReturned / HOURS_PER_WORKING_DAY),
   };
 }
